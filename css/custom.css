@@ -1,0 +1,16 @@
+p.resource {
+	text-align:center;
+}
+
+p.resource a, p.resource a:active, p.resource a:hover{
+	color: #A0A0F5;
+}
+
+
+.mood {
+  font-style: italic;
+}
+.mood:before {
+  content: " - ";
+  font-style: normal;
+}
