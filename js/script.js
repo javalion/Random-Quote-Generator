@@ -3,7 +3,7 @@
 
 
 var html = '';
-var availQuoteIndexes = [];
+var usedQuotes = [];
 var refreshIntervalId;
 
 function initialize()
@@ -14,37 +14,26 @@ function initialize()
 
 // Reset the available quote indexes so that all quotes are 
 // available again.
-function resetAvailableQuoteIndexes()
+function resetQuotes()
 {
-  availQuoteIndexes = [];
-  for (var i = 0; i < quotes.length; i++)
-  {
-	availQuoteIndexes[i] = i;
-  }
+  quotes = usedQuotes;
+  usedQuotes = [];
 }
 
-// Retrieve a random quotation object
+// Retrieve a non-duplicate random quotation object for the defined set of quotes.
 function getRandomQuote(){
-  var availQuoteIndex = Math.floor(Math.random() * availQuoteIndexes.length);
-  var quoteIdx = availQuoteIndexes[availQuoteIndex];
-  console.log(quoteIdx);
-  var quote = quotes[availQuoteIndexes[availQuoteIndex]];
-  if (availQuoteIndexes.length > 1 )
+  var quoteIdx = Math.floor(Math.random() * quotes.length);
+  var quote = quotes[quoteIdx];
+
+  // Let's move the quote into the usedQuotes so we don't use it again
+  // until all the other quotes have been displayed.
+  quotes.splice(quoteIdx,1);
+  usedQuotes.push(quote);
+
+  if (quotes.length === 0)
   {
-	  var tmpAvailQuoteIndexes = [];
-	  var counter = 0;
-	  for (var i = 0; i < availQuoteIndexes.length; i++)
-	  {
-	  	if (i === availQuoteIndex)
-	  		continue;  	
-	  	tmpAvailQuoteIndexes[counter] = availQuoteIndexes[i];
-	  	counter++;
-	  }
-      availQuoteIndexes = tmpAvailQuoteIndexes;
-  }
-  else
-  {
-    resetAvailableQuoteIndexes();
+  	quotes = usedQuotes;
+  	usedQuotes = [];
   }
   return quote;
 }
